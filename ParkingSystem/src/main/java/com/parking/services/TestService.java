@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.parking.models.ParkingLevel;
-import com.parking.reoisutirues.ParkingLevelRepository;
+import com.parking.repositories.ParkingLevelRepository;
 
 @Service
 public class TestService {

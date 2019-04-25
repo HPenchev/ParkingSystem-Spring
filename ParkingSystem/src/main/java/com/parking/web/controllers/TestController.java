@@ -20,13 +20,13 @@ public class TestController {
 	
 	@PostMapping(value = "/test",
 	          produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	  public ResponseEntity<Object> addPaymentInstrument() {
+  public ResponseEntity<Object> addPaymentInstrument() {
 
-		ParkingLevel level = new ParkingLevel();
-		level.setLevel(1);
-		
-		test.save(level);
-		
-	    return new ResponseEntity<Object>(HttpStatus.OK);
-	  }
+	ParkingLevel level = new ParkingLevel();
+	level.setLevel(1);
+	
+	test.save(level);
+	
+    return new ResponseEntity<Object>(HttpStatus.OK);
+  }
 }

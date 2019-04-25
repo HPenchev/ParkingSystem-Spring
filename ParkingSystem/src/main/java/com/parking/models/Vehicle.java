@@ -50,4 +50,12 @@ public class Vehicle {
 	public void setVehicleNumber(String vehicleNumber) {
 		this.vehicleNumber = vehicleNumber;
 	}
+
+	public ParkingPlace getParkingPlace() {
+		return parkingPlace;
+	}
+
+	public void setParkingPlace(ParkingPlace parkingPlace) {
+		this.parkingPlace = parkingPlace;
+	}
 }
