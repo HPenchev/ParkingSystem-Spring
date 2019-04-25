@@ -13,7 +13,6 @@ import com.parking.resources.VehicleType;
 @Entity
 @Table(name="vehicles")
 public class Vehicle {
-	
 	@Id
 	@Column
 	private long id;
