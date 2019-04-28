@@ -4,8 +4,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,6 +19,7 @@ import com.parking.resources.VehicleType;
 @Table(name="parking_places")
 public class ParkingPlace {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private long id;
 	
@@ -25,8 +29,10 @@ public class ParkingPlace {
 	@Column
 	private VehicleType type;
 	
-	@OneToOne(mappedBy = "parkingPlace", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "parking_places_vehicles", 
+      joinColumns = { @JoinColumn(name = "parking_place_id", referencedColumnName = "id") },
+      inverseJoinColumns = { @JoinColumn(name = "vehicle_id", referencedColumnName = "id")})
 	private Vehicle vehicle;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

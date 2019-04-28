@@ -3,6 +3,8 @@ package com.parking.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -14,6 +16,7 @@ import com.parking.resources.VehicleType;
 @Table(name="vehicles")
 public class Vehicle {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private long id;
 	
@@ -23,8 +26,7 @@ public class Vehicle {
 	@Column(name="vehicle_number", unique=true, nullable=false)
 	private String vehicleNumber;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parking_place_id")
+	@OneToOne(mappedBy = "vehicle")
 	private ParkingPlace parkingPlace;
 
 	public long getId() {
