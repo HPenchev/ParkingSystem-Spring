@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +33,12 @@ import com.parking.resources.VehicleType;
 import com.parking.resources.responses.ListOfParkingPlacesPerAvailability;
 import com.parking.resources.responses.ParkVehicleResponse;
 
+
 @Service
 public class ParkingServiceImpl implements ParkingService {
+	private static final Logger LOGGER 
+    	= LoggerFactory.getLogger(ParkingServiceImpl.class);
+	
 	@Autowired
 	private ParkingLevelRepository parkingLevelRepository;
 	@Autowired
@@ -51,6 +58,7 @@ public class ParkingServiceImpl implements ParkingService {
 			int motorcyclePlacesPerLevel, 
 			int numberOfEntrances, 
 			int numberOfExits) {
+		
 		createEntrances(numberOfEntrances);
 		
 		createExits(numberOfExits);
@@ -59,6 +67,8 @@ public class ParkingServiceImpl implements ParkingService {
 				carPlacesPerLevel, 
 				busPlacesPerLevel, 
 				motorcyclePlacesPerLevel);
+		LOGGER.debug("test");
+		LOGGER.info("Parking has been created");
 	}
 	
 	@Override
@@ -82,6 +92,7 @@ public class ParkingServiceImpl implements ParkingService {
 		if (parkingPlace == null) {
 			response.setMessage("No parking places available for a vehicle type");
 			status = HttpStatus.UNPROCESSABLE_ENTITY;
+			LOGGER.warn("No parking places available");
 		} else {
 			parkingPlace.setVehicle(vehicle);
 			parkingPlaceRepository.save(parkingPlace);
@@ -95,10 +106,15 @@ public class ParkingServiceImpl implements ParkingService {
 					parkingPlaceNumber);
 			vehiclesParked++;
 			status = HttpStatus.OK;
+			
+			LOGGER.info("Vehicle " + 
+					vehicleNumber + 
+					" was parked on place " + 
+					parkingPlaceNumber);
 		}
 		
 		response.setNumberOfVehiclesParked(vehiclesParked);
-				
+		
 		return new ResponseEntity<ParkVehicleResponse>(response, status);
 	}
 
@@ -111,7 +127,11 @@ public class ParkingServiceImpl implements ParkingService {
 		parkingPlace.setVehicle(null);
 		parkingPlaceRepository.save(parkingPlace);
 		
-		return new ResponseEntity<String>(vehicle.getVehicleNumber(), HttpStatus.OK);
+		String vehicleNumber = vehicle.getVehicleNumber();
+		
+		LOGGER.info("Vehicle " + vehicleNumber + " left the parking");
+		
+		return new ResponseEntity<String>(vehicleNumber, HttpStatus.OK);
 	}
 	
 	@Override
